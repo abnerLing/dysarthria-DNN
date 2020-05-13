@@ -58,8 +58,9 @@ There are many things you could test out to improve WER as I did not have time t
 | mfcc + pitch  | 34.39  |
 | fbank + pitch + fmllr  | **32.74**  |
 
+- Given that this model is a standard MLP with no extra fancy features, don't expect to obtain better results than state-of-the-art models. It's best to be used as a sample for building baseline models.
 - As you can see the WER does not reach as low as the model from [1], but it may be worth noting researchers from that paper used a more sophisticated methods of data augmentation by modifying tempo at the phoneme level.
-- I was able to get competitive results with [2] which used fbank+pitch features in a novel GNN-based acoustic model. It's probably not a fair compraison since they did not use data augmentation.
+- I was able to get competitive results with [2] which used fbank+pitch features in a novel GNN-based acoustic model. But it's probably not a fair compraison since they did not use data augmentation.
 
 
 ### References
