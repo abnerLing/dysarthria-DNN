@@ -34,7 +34,7 @@ steps/nnet/make_fmllr_feats.sh --nj $nj --cmd "$train_cmd" --transform-dir ${gmm
 2. Next you need fmllr align train/test/dev sets
 ```
 steps/align_fmllr.sh --nj $nj --cmd "$train_cmd" --boost-silence $boost_sil \
-            $data_dir/train $lang ${gmmdir} exp/tri4_ali_train || exit 1
+      $data_dir/train $lang ${gmmdir} exp/tri4_ali_train || exit 1
 ```
 3. Run cfg script 
   - I recommend just working in the pytorch-kaldi directory.
