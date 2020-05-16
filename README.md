@@ -1,6 +1,6 @@
 
 # DNN-based ASR with UAspeech
-- Baseline script for UAspeech data using pytorch-kaldi based DNN's
+- Baseline cfg file for UAspeech data using pytorch-kaldi based DNN's
 - This is just an example on how to use the pytorch-kaldi library to improve the WER of dysarthric speech ASR.
 - To use this toolkit you must already have alignments which can be generated from a GMM-HMM acoustic model with kaldi, check the following repositories if you have not already done so.
   - https://github.com/ffxiong/uaspeech
