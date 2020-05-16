@@ -9,7 +9,7 @@
   
 ### Installation
 - install pytorch https://pytorch.org/get-started/locally/
-- clone pytorch-kaldi repository
+- clone pytorch-kaldi repository (I highly reccomend following one of their tutorials on TIMIT or Librispeech first, so you know the basics of this toolkit).
 ```
 git clone git clone https://github.com/mravanelli/pytorch-kaldi
 ```
@@ -36,15 +36,25 @@ steps/nnet/make_fmllr_feats.sh --nj $nj --cmd "$train_cmd" --transform-dir ${gmm
 steps/align_fmllr.sh --nj $nj --cmd "$train_cmd" --boost-silence $boost_sil \
       $data_dir/train $lang ${gmmdir} exp/tri4_ali_train || exit 1
 ```
-3. Run cfg script 
+3. Directly modify the cfg directories to point to your features, alignments, scoring script<br/>
+This will need to be done for all features, all alignments, all data sets.
+```
+features:
+fea_lst=/home/user/kaldi/egs/uaspeech/data/train/fbank_pitch/feats.scp
+alignments:
+lab_folder=/home/user/kaldi/egs/uaspeech/exp/tri4_ali
+scoring:
+scoring_script = /home/user/kaldi/egs/uaspeech/local/score.sh
+```
+4. Run cfg script 
   - I recommend just working in the pytorch-kaldi directory.
 ``` 
 python /pytorch-kaldi/run_exp.py cfg/ua_best.cfg
 ```
-4. Check Results
+Check Results
 ``` 
 cat /pytorch-kaldi/exp/uaspeech_best/decode_test_out_dnn1/scoring_kaldi/best_wer
-%WER 32.74 [ 7686 / 23477, 0 ins, 0 del, 7686 sub ] /pytorch-kaldi/exp/uaspeech_best/decode_test_out_dnn1/wer_10_0.0
+%WER 32.74 [ 7686 / 23477, 0 ins, 0 del, 7686 sub ]
 ```
 
 ## Modify hyperparameters?
