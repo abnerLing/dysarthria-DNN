@@ -6,31 +6,42 @@
   - https://github.com/ffxiong/uaspeech
   - https://github.com/abnerLing/dysarthria-asr
   
-- The results shown are from my own personal experiments using the typical training methods as previous studies.
-  - Speaker dependent models 
-  - Training with all healthy speaker utterancse wile only using B1+B3 utterances for dysarthric speakers.
-  - The dev set was composed of only 2 speakers from the healthy set.
-  - Decoding with the B2 utterances from dysarthric speakers.
-### Instructions
-1. Install kaldi https://kaldi-asr.org/doc/install.html
-2. Install pytorch https://pytorch.org/get-started/locally/
-
-3. clone pytorch-kaldi repository
+  
+### Installation
+- install pytorch https://pytorch.org/get-started/locally/
+- clone pytorch-kaldi repository
 ```
 git clone git clone https://github.com/mravanelli/pytorch-kaldi
 ```
-4. Install other required libraries
+install required libraries for pytorch-kaldi
 ```
 cd pytorch-kaldi
 pip install -r requirements.txt
 ```
-5. Run cfg script 
-  - You can just download the cfg files and put them in the cfg directory from pytorch-kaldi or clone this repository and run it from there.)
+
+### Instructions
+1. The cfg I made uses fbank+pitch+fmllr features so you will need to extract those for all train/test/dev sets<br/>
+To extract and concatenate fbank+pitch features you can run something like this:
+```
+steps/make_fbank_pitch.sh --nj $nj --cmd "$train_cmd" data/train exp/make_fbank_pitch/train $feadir
+steps/compute_cmvn_stats.sh data/train exp/make_fbank_pitch/train $feadir
+```
+For extracting fmllr features you can run something like this (where gmmdir is the directory of your alignments and data_fmllr is where your fmllr features will be located):
+```
+steps/nnet/make_fmllr_feats.sh --nj $nj --cmd "$train_cmd" --transform-dir ${gmmdir}_ali \
+        $data_fmllr/train $data_dir/train $gmmdir $data_fmllr/train/log $data_fmllr/train/data || exit 1
+```
+2. Next you need fmllr align train/test/dev sets
+```
+steps/align_fmllr.sh --nj $nj --cmd "$train_cmd" --boost-silence $boost_sil \
+            $data_dir/train $lang ${gmmdir} exp/tri4_ali_train || exit 1
+```
+3. Run cfg script 
   - I recommend just working in the pytorch-kaldi directory.
 ``` 
 python /pytorch-kaldi/run_exp.py cfg/ua_best.cfg
 ```
-6. Check Results
+4. Check Results
 ``` 
 cat /pytorch-kaldi/exp/uaspeech_best/decode_test_out_dnn1/scoring_kaldi/best_wer
 %WER 32.74 [ 7686 / 23477, 0 ins, 0 del, 7686 sub ] /pytorch-kaldi/exp/uaspeech_best/decode_test_out_dnn1/wer_10_0.0
